@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    User Signup
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card bg-light shadow">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Create Your Abul's Pizza Account</h2>
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Error! </strong> Please correct the following errors:
+                            <ul>
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            <div class="col">
+                                {% for field in form %}
+                                    <div class="mb-3">
+                                        <label for="{{ field.id_for_label }}" class="form-label"> {{ field.label }}</label>
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="btn btn-danger btn-block">Create Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .card {
+            border: none;
+            border-radius: 15px;
+            background-color: #f8d7da; 
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.3); 
+            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'); 
+        }
+
+        .card-body {
+            padding: 40px;
+        }
+
+        .card-title {
+            color: #dc3545;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545; 
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #dc3545;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+        
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb; 
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem; 
+            border: 1px solid transparent; 
+            border-radius: 0.25rem;
+        }
+    </style>
+{% endblock %}

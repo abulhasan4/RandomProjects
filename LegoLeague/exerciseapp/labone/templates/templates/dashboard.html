@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Welcome to Your STRIVE Dashboard</h1>
+    <div class="row mt-4">
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Today's Workout</h5>
+                    <p class="card-text">You have a workout scheduled for today. Get ready to sweat!</p>
+                    <a href="{% url 'index' %}" class="btn btn-primary">Start Workout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Workout History</h5>
+                    <p class="card-text">View your workout history and track your progress over time.</p>
+                    <a href="{% url 'index' %}" class="btn btn-primary">View History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Bests</h5>
+                    <p class="card-text">View your personal bests and achievements in various exercises.</p>
+                    <a href="{% url 'index' %}" class="btn btn-primary">View Personal Bests</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
