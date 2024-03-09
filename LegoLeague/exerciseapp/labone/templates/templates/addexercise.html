@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <h5 class="card-header">Add Exercise</h5>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.exercise_type.label_tag }}
+                            {{ form.exercise_type }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.duration.label_tag }}
+                            {{ form.duration }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.intensity.label_tag }}
+                            {{ form.intensity }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.description.label_tag }}
+                            {{ form.description }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -42,3 +42,62 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
+
+class Exercise(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    CARDIO = 'Cardio'
+    STRENGTH_TRAINING = 'Strength Training'
+    FLEXIBILITY = 'Flexibility'
+    YOGA = 'Yoga'
+    PILATES = 'Pilates'
+    HIIT = 'HIIT'
+    CROSSFIT = 'CrossFit'
+    SWIMMING = 'Swimming'
+    CYCLING = 'Cycling'
+    RUNNING = 'Running'
+    WALKING = 'Walking'
+    OTHER = 'Other'
+    EXERCISE_TYPE_CHOICES = [
+        (CARDIO, 'Cardio'),
+        (STRENGTH_TRAINING, 'Strength Training'),
+        (FLEXIBILITY, 'Flexibility'),
+        (YOGA, 'Yoga'),
+        (PILATES, 'Pilates'),
+        (HIIT, 'HIIT'),
+        (CROSSFIT, 'CrossFit'),
+        (SWIMMING, 'Swimming'),
+        (CYCLING, 'Cycling'),
+        (RUNNING, 'Running'),
+        (WALKING, 'Walking'),
+        (OTHER, 'Other'),
+    ]
+    exercise_type = models.CharField(max_length=50, choices=EXERCISE_TYPE_CHOICES)
+    DURATION_CHOICES = [
+        ('0:15:00', '15 minutes'),
+        ('0:30:00', '30 minutes'),
+        ('0:45:00', '45 minutes'),
+        ('1:00:00', '1 hour'),
+        ('1:15:00', '1 hour 15 minutes'),
+        ('1:30:00', '1 hour 30 minutes'),
+        ('1:45:00', '1 hour 45 minutes'),
+        ('2:00:00', '2 hours'),
+        ('2:15:00', '2 hours 15 minutes'),
+        ('2:30:00', '2 hours 30 minutes'),
+        ('2:45:00', '2 hours 45 minutes'),
+        ('3:00:00', '3 hours'),
+    ]
+    duration = models.CharField(max_length=8, choices=DURATION_CHOICES)
+    LOW = 'Low'
+    MODERATE = 'Moderate'
+    HIGH = 'High'
+    INTENSITY_CHOICES = [
+        (LOW, 'Low'),
+        (MODERATE, 'Moderate'),
+        (HIGH, 'High'),
+    ]
+    intensity = models.CharField(max_length=20, choices=INTENSITY_CHOICES)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.user}'s {self.exercise_type} - Duration: {self.get_duration_display()}, Intensity: {self.intensity}, Description: {self.description}"
+

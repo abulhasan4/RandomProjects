@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Workout History</h1>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Exercise Type</th>
+                        <th>Duration</th>
+                        <th>Intensity</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for workout in workout_history %}
+                    <tr>
+                        <td>{{ workout.date }}</td>
+                        <td>{{ workout.exercise_type }}</td>
+                        <td>{{ workout.duration }}</td>
+                        <td>{{ workout.get_intensity_display }}</td>
+                        <td>{{ workout.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

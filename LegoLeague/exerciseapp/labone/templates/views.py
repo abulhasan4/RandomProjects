@@ -37,3 +37,20 @@ def logout_user(request):
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+@login_required
+def add_exercise(request):
+    if request.method == 'POST':
+        form = ExerciseForm(request.POST)
+        if form.is_valid():
+            exercise = form.save(commit=False)
+            exercise.user = request.user
+            exercise.save()
+            return redirect('dashboard')  # Assuming 'dashboard' is the URL name for the dashboard page
+    else:
+        form = ExerciseForm()
+    return render(request, 'addexercise.html', {'form': form})
+
+@login_required
+def workout_history(request):
+    return render(request, 'workouthistory.html')
