@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Filter App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <h2>Upload Excel File</h2>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Upload</button>
+    
+    <h2>Uploaded Spreadsheet</h2>
+    <table border="1" id="spreadsheetTable"></table>
+    
+    <h2>Filter Data</h2>
+    <input type="text" id="column" placeholder="Column Name">
+    <input type="text" id="value" placeholder="Filter Value">
+    <select id="matchType">
+        <option value="exact">Exact Match</option>
+        <option value="contains">Contains</option>
+    </select>
+    <button onclick="filterData()">Filter</button>
+    
+    <h2>Download Filtered Data</h2>
+    <a id="downloadLink" style="display:none;" download>Download CSV</a>
+    
+    <script>
+        let uploadedFilename = "";
+        
+        function uploadFile() {
+            let fileInput = document.getElementById('fileInput');
+            let formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            
+            fetch('/upload', { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    uploadedFilename = data.filename;
+                    alert('File uploaded successfully');
+                    viewFile();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        
+        function viewFile() {
+            fetch(`/view?filename=${uploadedFilename}`)
+                .then(response => response.json())
+                .then(data => {
+                    let table = document.getElementById('spreadsheetTable');
+                    table.innerHTML = "";
+                    
+                    if (data.length > 0) {
+                        let headers = Object.keys(data[0]);
+                        let headerRow = table.insertRow();
+                        headers.forEach(header => {
+                            let th = document.createElement("th");
+                            th.textContent = header;
+                            headerRow.appendChild(th);
+                        });
+                        
+                        data.forEach(row => {
+                            let tr = table.insertRow();
+                            headers.forEach(header => {
+                                let td = tr.insertCell();
+                                td.textContent = row[header];
+                            });
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        
+        function filterData() {
+            let column = document.getElementById('column').value;
+            let value = document.getElementById('value').value;
+            let matchType = document.getElementById('matchType').value;
+            
+            fetch('/filter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: uploadedFilename, filters: { [column]: value }, match_type: matchType })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('downloadLink').href = data.download_url;
+                document.getElementById('downloadLink').style.display = 'block';
+                document.getElementById('downloadLink').innerText = 'Download Filtered CSV';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
